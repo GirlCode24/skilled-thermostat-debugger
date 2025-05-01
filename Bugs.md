@@ -41,3 +41,9 @@ number>' when the room is between 25 - 32) but its not.
 *IDENTIFICATION METHOD:* I manually set the temperature to 24 and switched on the AC to check if that event works correctly when triggered but instead of giving the feedback "cooling room to 24" it gave the feedback "warming room to 24". 
 *SOLUTION:* I interchanged the condition on *line 328* so when the temperature is greater than 25, It warms the room and when less than 25, it cools the room.
 *STATUS:* ✅AC Feedback Fixed.
+
+*BUG 7* *ERROR MESSAGE NOT CLOSING*
+*PROBLEM:* The error message wasn't disapearing after the close button is triggered, thereby making it imposibble to enter new valid values.
+*IDENTIFICATION METHOD:* Manual testing by entering wrong values, the error message displaying and trying to close it.
+*SOLUTION:* Declared the error message in the event listener and set the display to none.
+*STATUS:* ✅Error Message Fixed.

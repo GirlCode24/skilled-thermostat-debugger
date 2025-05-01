@@ -140,7 +140,14 @@ const rooms = [
         : (this.airConditionerOn = true);
     },
   },
+  
 ];
+// New Room Creation
+const modalContainer = document.getElementById('modalContainer');
+const addRoomBtn = document.getElementById('addRoom');
+const closeModalBtn = document.getElementById('closeModal');
+const showModalBtn = document.getElementById('modalBtn');
+
 
 const coolOverlay = `linear-gradient(
     to bottom,
@@ -222,19 +229,19 @@ roomSelect.addEventListener("change", function () {
 
   setSelectedRoom(selectedRoom);
 });
-
-// Set preset temperatures
+//Event Delegation For Preset Buttons
 const defaultSettings = document.querySelector(".default-settings");
 defaultSettings.addEventListener("click", function (e) {
   const room = rooms.find((currRoom) => currRoom.name === selectedRoom);
   if (!room) return;
-
+  //Temperature Icons(Preset)
   if (e.target.closest("#cool")) {
     const newTemp = room.setCurrTemp(room.coldPreset);
     setIndicatorPoint(newTemp);
     currentTemp.textContent = `${room.currTemp}°`;
     generateRooms();
     setOverlay(room);
+    document.querySelector(".currentTemp").innerText = `${room.currTemp}°`;
   }
 
   if (e.target.closest("#warm")) {
@@ -243,6 +250,7 @@ defaultSettings.addEventListener("click", function (e) {
     currentTemp.textContent = `${room.currTemp}°`;
     generateRooms();
     setOverlay(room);
+    document.querySelector(".currentTemp").innerText = `${room.currTemp}°`;
   }
 });
 
@@ -272,11 +280,8 @@ const changeTemperature = (action) => {
   coolBtn.style.backgroundColor = "#d9d9d9";
 
   document.querySelector(".currentTemp").innerText = `${room.currTemp}°`;
-  //Temperature Icons(Preset)
 };
 
-const coolBtn = document.getElementById("cool");
-const warmBtn = document.getElementById("warm");
 
 const inputsDiv = document.querySelector(".inputs");
 // Toggle preset inputs
@@ -291,6 +296,7 @@ document.getElementById("close").addEventListener("click", () => {
   inputsDiv.classList.add("hidden");
   const errorSpan = document.querySelector(".error");
   errorSpan.style.display = "none";
+  errorSpan.innerText = "";
 });
 
 // handle preset input data
@@ -304,28 +310,156 @@ document.getElementById("save").addEventListener("click", () => {
       errorSpan.style.display = "block";
       errorSpan.innerText = "Enter valid cool temperatures (10° - 24°)";
     }
-    else{
-      errorSpan.style.display = "none";
-    }
+
     if (warmInput.value < 25 || warmInput.value > 32) {
       errorSpan.style.display = "block";
       errorSpan.innerText = "Enter valid warm temperatures (25° - 32°)";
     }
-    else{
-      errorSpan.style.display = "none";
-    }
-    // Validation passed
-    // Set current room's presets
-    const currRoom = rooms.find((room) => room.name === selectedRoom);
-    currRoom.setColdPreset(coolInput.value);
-    currRoom.setWarmPreset(warmInput.value);
-    coolInput.value = "";
-    warmInput.value = "";
   }
+  // Validation passed
+  // Set current room's presets
+  const currRoom = rooms.find((room) => room.name === selectedRoom);
+  let validCoolInput =
+    coolInput.value >= 10 && coolInput.value <= 24
+      ? coolInput.value
+      : currRoom.currTemp;
+
+  let validWarmInput =
+    warmInput.value >= 25 && warmInput.value <= 32
+      ? warmInput.value
+      : currRoom.currTemp;
+
+  currRoom.setColdPreset(validCoolInput);
+  currRoom.setWarmPreset(validWarmInput);
+  coolInput.value = "";
+  warmInput.value = "";
 });
 
-// Rooms Control
-// Generate rooms
+// Modal for adding new room
+function createNewRoom() {
+  const name = document.getElementById('roomName').value.trim();
+  const currTemp = parseInt(document.getElementById('currentTemp').value);
+  const coldPreset = parseInt(document.getElementById('coldPreset').value);
+  const warmPreset = parseInt(document.getElementById('warmPreset').value);
+  const image = "./assets/two-queen-ocean-view-03.jpg.jpg"; 
+  const startTime = document.getElementById('startTime').value;
+const endTime = document.getElementById('endTime').value;
+
+if (!startTime || !endTime) {
+  alert('Please enter start and end times.');
+  return;
+}
+
+
+  // Basic validation
+  if (!name || isNaN(currTemp) || isNaN(coldPreset) || isNaN(warmPreset)) {
+    alert('Please enter all fields correctly.');
+    return;
+  }
+
+  if (coldPreset < 10 || coldPreset > 24) {
+    alert('Cold preset must be between 10°C and 24°C');
+    return;
+  }
+
+  if (warmPreset < 25 || warmPreset > 32) {
+    alert('Warm preset must be between 25°C and 32°C');
+    return;
+  }
+
+  if (currTemp < 10 || currTemp > 32) {
+    alert('Current temperature must be between 10°C and 32°C');
+    return;
+  }
+
+  // Create new room object
+  const newRoom = {
+    name,
+    currTemp,
+    coldPreset,
+    warmPreset,
+    image:"/assets/two-queen-ocean-view-03.jpg",
+    airConditionerOn: false,
+    startTime,
+    endTime,
+
+    setCurrTemp(temp) {
+      this.currTemp = temp;
+    },
+    setColdPreset(newCold) {
+      this.coldPreset = newCold;
+    },
+    setWarmPreset(newWarm) {
+      this.warmPreset = newWarm;
+    },
+    decreaseTemp() {
+      this.currTemp--;
+    },
+    increaseTemp() {
+      this.currTemp++;
+    },
+    toggleAircon() {
+      this.airConditionerOn = !this.airConditionerOn;
+    }
+  };
+
+  // Push to rooms array 
+  rooms.push(newRoom);
+
+  const option = document.createElement("option");
+  option.value = name;
+  option.textContent = name;
+  roomSelect.appendChild(option);
+  roomSelect.value = name;
+
+  // Reset inputs and close modal
+  document.getElementById('roomName').value = '';
+  document.getElementById('currentTemp').value = '';
+  document.getElementById('coldPreset').value = '';
+  document.getElementById('warmPreset').value = '';
+ 
+
+  modalContainer.classList.add('hidden');
+
+  // Set new room as selected
+  selectedRoom = name;
+  setSelectedRoom(name);
+  generateRooms();
+}
+// AC Schedules
+function checkACSchedules() {
+  const now = new Date();
+  const currentHours = now.getHours();
+  const currentMinutes = now.getMinutes();
+  
+  rooms.forEach(room => {
+    if (!room.startTime || !room.endTime) return;
+    
+    //start and end times
+    const [startHours, startMinutes] = room.startTime.split(':').map(Number);
+    const [endHours, endMinutes] = room.endTime.split(':').map(Number);
+    const currentTotal = currentHours * 60 + currentMinutes;
+    const startTotal = startHours * 60 + startMinutes;
+    const endTotal = endHours * 60 + endMinutes;
+    
+    if (currentTotal >= startTotal && currentTotal < endTotal) {
+      if (!room.airConditionerOn) {
+        room.airConditionerOn = true;
+        console.log(`AC turned ON for ${room.name}`);
+        generateRooms(); 
+      }
+    } else {
+      if (room.airConditionerOn) {
+        room.airConditionerOn = false;
+        console.log(`AC turned OFF for ${room.name}`);
+        generateRooms(); 
+      }
+    }
+  });
+}
+setInterval(checkACSchedules, 1000);
+
+
 const generateRooms = () => {
   const roomsControlContainer = document.querySelector(".rooms-control");
   let roomsHTML = "";
@@ -335,7 +469,7 @@ const generateRooms = () => {
     <div class="room-control" id="${room.name}">
           <div class="top">
             <h3 class="room-name">${room.name} - ${room.currTemp}°</h3>
-            <button class="switch">
+            <button class="switch" >
               <ion-icon name="power-outline" class="${
                 room.airConditionerOn ? "powerOn" : ""
               }"></ion-icon>
@@ -354,7 +488,10 @@ const generateRooms = () => {
   });
 
   roomsControlContainer.innerHTML = roomsHTML;
+
+
 };
+
 const displayTime = (room) => {
   return `
       <div class="time-display">
@@ -400,6 +537,25 @@ const displayTime = (room) => {
 
 generateRooms();
 
+// Modal Event Listeners
+showModalBtn.addEventListener('click', () => {
+  modalContainer.classList.remove('hidden');
+});
+
+closeModalBtn.addEventListener('click', () => {
+  modalContainer.classList.add('hidden');
+});
+
+modalContainer.addEventListener('click', (e) => {
+  if (e.target === modalContainer) {
+    modalContainer.classList.add('hidden');
+  }
+});
+
+addRoomBtn.addEventListener('click', createNewRoom);
+
+
+
 document.querySelector(".rooms-control").addEventListener("click", (e) => {
   if (e.target.classList.contains("switch")) {
     const room = rooms.find(
@@ -411,5 +567,6 @@ document.querySelector(".rooms-control").addEventListener("click", (e) => {
 
   if (e.target.classList.contains("room-name")) {
     setSelectedRoom(e.target.parentNode.parentNode.id);
+    roomSelect.value = roomElement.id;
   }
 });
