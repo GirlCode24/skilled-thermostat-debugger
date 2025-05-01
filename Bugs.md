@@ -22,6 +22,22 @@ _STATUS:_ ✅Background for room temperature sucessfuly fixed.
 
 *BUG 4:* *DUPLICATE INCREASE AND DECREASE TEMPERATURE FUNCTION*
 *PROBLEM:* Repetition of code for increasing and decreasing temperature.
-*IDENTICPFIACTION METHOD:* Manual review of the Javascript file and comparison of both functions.
+*IDENTIFIACTION METHOD:* Manual review of the Javascript file and comparison of both functions.
 *SOLUTION:* Created a single reusable function changeTemperature(action) that handles both increasing and decreasing temperature depending on the action passed. Cleaned up event listeners
-*STATUS:* ✅Temperature Successfully refactored and fixed.
+*STATUS:* ✅Temperature function successfully refactored and fixed.
+
+*BUG 5:* *PRESET CONFIGURATION*
+*PROBELEM:* In the HTML file the max and min limit for the cool and warm preset was set to 22 respectively, thereby making it impossible to go to 23-25.
+*IDENTIFICATION METHOD:* I manually input the values into the preset fucntion and they gave error messages even though they were valid and un the range.
+*SOLUTION:* I changed the max value of the cool inpout to 24, and the min value of the warm input to 25. And on *line 287* and *line 292*, i changed the error messages to match the limit of the exact temperature limit being set. So it displays an error message based on the input entered for each temperature so the user knows which exact temperature is above the set limit.
+*STATUS:* ✅Preset Configuration fixed.
+
+
+*BUG 6:* *AC COMMUNICATION FEEDBACK*
+*PROBLEM:* When AC is turned on text description should communicate reasonable
+feedback (e.g. 'Cooling room to <temperature number>' when
+temperature is between 10 - 24 and 'Warming room to <temperature
+number>' when the room is between 25 - 32) but its not.
+*IDENTIFICATION METHOD:* I manually set the temperature to 24 and switched on the AC to check if that event works correctly when triggered but instead of giving the feedback "cooling room to 24" it gave the feedback "warming room to 24". 
+*SOLUTION:* I interchanged the condition on *line 328* so when the temperature is greater than 25, It warms the room and when less than 25, it cools the room.
+*STATUS:* ✅AC Feedback Fixed.
