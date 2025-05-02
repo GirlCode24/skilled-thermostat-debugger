@@ -433,6 +433,7 @@ function checkACSchedules() {
   const currentMinutes = now.getMinutes();
   
   rooms.forEach(room => {
+    if (allACsOn || room.manualOverride) return;
     if (!room.startTime || !room.endTime) return;
     
     //start and end times
@@ -537,6 +538,19 @@ const displayTime = (room) => {
 
 generateRooms();
 
+// Turn on/off all ACs
+let allACsOn = false;
+function toggleAllACs() {
+  allACsOn = !allACsOn;
+  rooms.forEach(room => {
+    room.airConditionerOn = allACsOn;
+  });
+  document.getElementById('toggleAllACsBtn').textContent = 
+    allACsOn ? 'Turn OFF All ACs' : 'Turn ON All ACs';
+  generateRooms();        
+}
+
+document.getElementById('toggleAllACsBtn').addEventListener('click', toggleAllACs);
 // Modal Event Listeners
 showModalBtn.addEventListener('click', () => {
   modalContainer.classList.remove('hidden');
@@ -561,6 +575,7 @@ document.querySelector(".rooms-control").addEventListener("click", (e) => {
     const room = rooms.find(
       (room) => room.name === e.target.parentNode.parentNode.id
     );
+    room.manualOverride = true;
     room.toggleAircon();
     generateRooms();
   }
