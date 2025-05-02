@@ -1,0 +1,23 @@
+{
+  "name": "skilled-thermostat-debugger",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GirlCode24/skilled-thermostat-debugger.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GirlCode24/skilled-thermostat-debugger/issues"
+  },
+  "homepage": "https://github.com/GirlCode24/skilled-thermostat-debugger#readme",
+  "description": "",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
