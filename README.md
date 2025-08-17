@@ -1,7 +1,7 @@
 # 🌡️ Skilled Thermostat Debugger
 
 A smart thermostat simulator/debugger built with **HTML, CSS, and JavaScript**.  
-It allows users to adjust settings, test scenarios, and identify issues in real-time.  
+Users can change room temperatures and watch the **room’s color/visual state adapt** to hot, cold, or normal conditions.  
 
 ---
 
@@ -11,10 +11,11 @@ It allows users to adjust settings, test scenarios, and identify issues in real-
 ---
 
 ## ✨ Features
-- 🔧 Adjust thermostat temperature interactively  
+- 🏠 Change temperature for different rooms  
+- 🌈 Room **color/visual state updates** based on temperature  
+- 🔧 Interactive thermostat controls  
 - 📊 Real-time updates of readings and states  
-- 🐛 Debug mode for testing different scenarios  
-- 💾 Local storage for saving state (if implemented)  
+- 🐛 Debug mode for testing scenarios  
 - 🎨 Responsive design for desktop & mobile  
 
 ---
@@ -25,24 +26,30 @@ It allows users to adjust settings, test scenarios, and identify issues in real-
 
 ---
 
+## 📸 Screenshot  
+
+![Thermostat Debugger Screenshot](https://github.com/user-attachments/assets/c5b8876f-3051-4fc8-8c99-3d57c1005d71)  
+
+---
+
 ## 📚 What I Learned
-🌟 Implementing debugging logic in UI  
-🌟 Handling state updates in real-time  
-🌟 Designing clean, minimal interfaces  
-🌟 Deploying with Vercel  
+🌟 Linking temperature logic to **dynamic UI changes**  
+🌟 Managing state across multiple rooms  
+🌟 Implementing debugging-friendly UI features  
+🌟 Deploying projects seamlessly with Vercel  
 
 ---
 
 ## 🐞 Known Issues
-See [Bugs.md](./Bugs.md) for current bugs, issues, and debugging notes.  
+See [bugs.md](./bugs.md) for current bugs, issues, and debugging notes.  
 
 ---
 
 ## 🚧 Future Enhancements
-🔹 Add detailed logging panel  
+🔹 Add detailed logging/debug panel  
 🔹 Introduce user authentication (optional)  
 🔹 Improve error handling  
-🔹 Enhance mobile UI  
+🔹 Enhance mobile UI with touch gestures  
 
 ---
 
