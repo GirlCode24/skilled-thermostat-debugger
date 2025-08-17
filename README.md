@@ -41,7 +41,7 @@ Users can change room temperatures and watch the **room’s color/visual state a
 ---
 
 ## 🐞 Known Issues
-See [bugs.md](./bugs.md) for current bugs, issues, and debugging notes.  
+See [Bugs.md](./Bugs.md) for current bugs, issues, and debugging notes.  
 
 ---
 
